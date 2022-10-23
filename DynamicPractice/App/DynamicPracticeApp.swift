@@ -8,7 +8,9 @@
 import SwiftUI
 
 @main
+@available(iOS 16.1, *)
 struct DynamicPracticeApp: App {
+
     var body: some Scene {
         WindowGroup {
             ContentView()
