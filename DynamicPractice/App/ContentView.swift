@@ -9,37 +9,107 @@ import SwiftUI
 import ActivityKit
 
 
+
 @available(iOS 16.1, *)
 struct ContentView: View {
     
-    var idk =  CalenderAccesser()
-    
+    @StateObject var accesser =  CalenderAccesser()
+
     
     var body: some View {
-        VStack {
+        NavigationView {
             
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        Button {
-           
-            idk.startActivity()
-            
-        } label: {
-            VStack {
-                Text("Click Me")
+            List {
+                if let fetchedEvents =  accesser.events {
+                    ForEach(fetchedEvents) {
+                        event in
+                        EventView(accesser: accesser, eventName: event.eventName, startDate: event.startDate, locationName: event.location, address: event.address)
+                        
+                    }
+                    
+                }
+                
             }
-            .foregroundColor(.green)
-            .padding()
             
+                .navigationTitle("Events")
             
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    
+                        Button {
+                            accesser.fetchCurrentEvents()
+                           
+                            
+                        } label: {
+                            HStack {
+                                Image(systemName: "plus")
+                                    .font(.system(.title3))
+                                    .foregroundColor(.yellow)
+                                    
+                            }
+                            
+                            
+                        }
+                    
+                    
+                }
+            }
             
         }
-        .padding()
-    }
+        .refreshable {
+            accesser.fetchCurrentEvents()
+           
+        }
+        }
+        
+       
 }
 
 
+@available(iOS 16.1, *)
+struct EventView: View {
+    
+    @State private var activateActivity = false
+    
+    var accesser: CalenderAccesser
+    
+    var eventName: String
+    var startDate: Date
+    var locationName: String
+    var address: String
+    @State private var activities = Activity<EventTrackerAttributes>.activities
+    
+    var body: some View {
+        
+        HStack {
+            Text(eventName)
+                .font(.system(.title3, design: .default))
+            Toggle("", isOn: $activateActivity )
+                .onTapGesture {
+                    
+                    if !activateActivity {
+                        accesser.startActivity(name: eventName, startTime: startDate, eventLocation: locationName,
+                                               address: address)
+                      
+                    } else {
+                        
+                        if let index = Activity<EventTrackerAttributes>.activities.firstIndex(where: {$0.contentState.eventName == eventName}) {
+                          
+                            accesser.endActivity(event: eventName, activities: Activity<EventTrackerAttributes>.activities[index])
+                        }
+                        
+                        
+                    }
+                   
+
+                }
+                     
+        }
+        
+        
+    }
+    
+    
+    
+}
 

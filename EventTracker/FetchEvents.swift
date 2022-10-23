@@ -5,12 +5,33 @@ import EventKitUI
 
 
 
+
+
+struct EventTrackerAttributes: ActivityAttributes {
+    public typealias EventAttributesStatus = ContentState
+    
+    public struct ContentState: Codable, Hashable {
+         
+        var eventName: String
+     }
+    
+    var startTime: Date
+    var eventAddress: String
+    var eventLocation: String
+    var timerSize: Int
+    var eventTimer: Date
+    
+    
+}
+
+
+
 @available(iOS 16.1, *)
-class CalenderAccesser: NSObject {
+class CalenderAccesser: NSObject, ObservableObject {
     
     var store: EKEventStore!
     
-    var eventNames: [String] = []
+    @Published var events: [EventInfo] = []
     
     
     override init() {
@@ -32,12 +53,22 @@ class CalenderAccesser: NSObject {
     func findCurrentEvents(name: String) -> [EKEvent]? {
         
         var calendar = Calendar.current
-        let dateFrom = calendar.startOfDay(for: Date())
-        let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom)
-
+        let dateFrom = Date.now
+        
+        
+        let startOfDay = calendar.startOfDay(for: Date.now) // Current date at 12:00 am
+        
+        var dateComponents = DateComponents()
+        dateComponents.day = 1
+        dateComponents.second = -1
+        
+        let endOfDay = calendar.date(byAdding: dateComponents, to: startOfDay)
+        
+    
         var predicate: NSPredicate? = nil
         
-        if let end = dateTo {
+        if let end = endOfDay {
+       
             predicate = self.store.predicateForEvents(withStart: dateFrom, end: end, calendars: nil)
         }
         
@@ -63,17 +94,35 @@ class CalenderAccesser: NSObject {
              }
         
         if let existedEvents = events {
-            eventNames = parseCollectedEvents(events: existedEvents)
+           
+            self.events = parseCollectedEvents(events: existedEvents)
         }
         
     }
     
     
-    func parseCollectedEvents(events: [EKEvent]) -> [String] {
+    
+    @available(iOS 16.1, *)
+    func endActivity(event: String, activities: Activity<EventTrackerAttributes>) {
         
-        var eventNames: [String] = []
+        
+        
+        let activityToEnd = EventTrackerAttributes.EventAttributesStatus(eventName: event)
+        
+        Task {
+            await activities.end(using: activityToEnd, dismissalPolicy: .immediate)
+        }
+        
+        
+    }
+    
+    func parseCollectedEvents(events: [EKEvent]) -> [EventInfo] {
+        
+        var eventNames: [EventInfo] = []
         for event in events {
-            eventNames.append(event.title)
+        
+            eventNames.append(EventInfo(eventName: event.title, startDate: event.startDate, location: event.structuredLocation?.title ?? "",
+                                        address: event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "`") + "\n" ?? "", with: "") ?? "" ,allDay: event.isAllDay))
         }
         
         
@@ -81,28 +130,46 @@ class CalenderAccesser: NSObject {
         
     }
     
-    func startActivity() {
-        let event = EventAttributes(eventName: "Event")
-
-        var calendar = Calendar.current
-        let dateFrom = calendar.startOfDay(for: Date())
-        let dateTo = calendar.date(byAdding: .day, value: 1, to: dateFrom) ?? Date()
+    func startActivity(name: String, startTime: Date, eventLocation: String, address: String) {
+        let calendar = Calendar.current
+      
+    
+        let currentTime = Date.now
+ 
+        let secondsUntil = startTime.timeIntervalSince(currentTime)
+    
         
-        let date = dateFrom...dateTo
-        let initialContentState =  EventAttributes.ContentState(eventLocation: "TIM 👨🏻‍🍳", eventTimer: date)
+        let event = EventTrackerAttributes(startTime: startTime, eventAddress: address, eventLocation: eventLocation, timerSize: Int(secondsUntil) , eventTimer: .now +  secondsUntil)
+        let initialContentState =  EventTrackerAttributes.ContentState( eventName: name)
+     
+        
 
         do {
-            let deliveryActivity = try Activity<EventAttributes>.request(
+            let deliveryActivity = try Activity.request(
                 attributes: event,
                 contentState: initialContentState,
                 pushType: nil)
-            print("Requested a pizza delivery Live Activity \(deliveryActivity.id)")
+            print("Requested a event Live Activity \(deliveryActivity.id)")
         } catch (let error) {
-            print("Error requesting pizza delivery Live Activity \(error.localizedDescription)")
+            print(error)
+            print("Error requesting event Live Activity \(error.localizedDescription)")
         }
     }
+    
+  
 
 
 }
 
 
+struct EventInfo: Identifiable {
+    
+    var id = UUID()
+    var eventName: String
+    var startDate: Date
+    var location: String
+    var address: String
+    var allDay: Bool
+    
+    
+}
