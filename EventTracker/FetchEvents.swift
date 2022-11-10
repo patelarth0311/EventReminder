@@ -1,9 +1,23 @@
 import UIKit
+import SwiftUI
+
 import ActivityKit
 import EventKit
 import EventKitUI
 
 
+
+struct EventInfo: Identifiable,  Hashable  {
+
+    var id = UUID()
+    
+    var event: EKEvent
+    var active: Bool
+  
+    
+    
+    
+}
 
 
 
@@ -11,15 +25,23 @@ struct EventTrackerAttributes: ActivityAttributes {
     public typealias EventAttributesStatus = ContentState
     
     public struct ContentState: Codable, Hashable {
-         
+        
         var eventName: String
-     }
+        var eventAddress: String
+        var eventLocation: String
+        var startDate: Date
+        var endDate: Date;
+        var timerSize: Int
+        var eventTimer: Date
+
+        
+  
+    }
     
-    var startTime: Date
-    var eventAddress: String
-    var eventLocation: String
-    var timerSize: Int
-    var eventTimer: Date
+    var eventID : String
+  
+ 
+   
     
     
 }
@@ -33,27 +55,31 @@ class CalenderAccesser: NSObject, ObservableObject {
     
     @Published var events: [EventInfo] = []
     
+    @Published var kEvents: [EKEvent] = []
+    
+ 
+
     
     override init() {
         store  = EKEventStore()
-     }
-
-
+    }
+    
+    
     private func getAuthorizationStatus() -> EKAuthorizationStatus {
         return EKEventStore.authorizationStatus(for: EKEntityType.event)
     }
-
-
+    
+    
     private func request(completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
         store.requestAccess(to: EKEntityType.event) { (accessGranted, error) in
-                   completion(accessGranted, error)
-               }
+            completion(accessGranted, error)
+        }
     }
-
+    
     func findCurrentEvents(name: String) -> [EKEvent]? {
         
-        var calendar = Calendar.current
-        let dateFrom = Date.now
+        let calendar = Calendar.current
+        _ = Date.now
         
         
         let startOfDay = calendar.startOfDay(for: Date.now) // Current date at 12:00 am
@@ -64,38 +90,39 @@ class CalenderAccesser: NSObject, ObservableObject {
         
         let endOfDay = calendar.date(byAdding: dateComponents, to: startOfDay)
         
-    
+        
         var predicate: NSPredicate? = nil
         
         if let end = endOfDay {
-       
-            predicate = self.store.predicateForEvents(withStart: dateFrom, end: end, calendars: nil)
+            
+            predicate = self.store.predicateForEvents(withStart: Date.now , end: end, calendars: nil)
         }
         
-        var events: [EKEvent]? = nil
         if let aPredicate = predicate {
-            events = self.store.events(matching: aPredicate)
+            kEvents = self.store.events(matching: aPredicate)
         }
-        return events
+        return kEvents
     }
+    
+    
     
     func fetchCurrentEvents() {
         let authStatus = getAuthorizationStatus()
         var events: [EKEvent]?
         switch authStatus {
-             case .notDetermined:
+        case .notDetermined:
             store.requestAccess(to: EKEntityType.event) { (_, _) in
                 events = self.findCurrentEvents(name: "Calender")
-                    }
-             case .authorized:
-                events = self.findCurrentEvents(name: "Calender")!
-             case .denied: print("Access denied")
-             default: break
-             }
+            }
+        case .authorized:
+            events = self.findCurrentEvents(name: "Calender")!
+        case .denied: print("Access denied")
+        default: break
+        }
         
         if let existedEvents = events {
-           
             self.events = parseCollectedEvents(events: existedEvents)
+            
         }
         
     }
@@ -103,14 +130,49 @@ class CalenderAccesser: NSObject, ObservableObject {
     
     
     @available(iOS 16.1, *)
-    func endActivity(event: String, activities: Activity<EventTrackerAttributes>) {
-        
-        
-        
-        let activityToEnd = EventTrackerAttributes.EventAttributesStatus(eventName: event)
+    func endActivity(activities: Activity<EventTrackerAttributes>) {
         
         Task {
-            await activities.end(using: activityToEnd, dismissalPolicy: .immediate)
+            await activities.end(dismissalPolicy: .immediate)
+        }
+        
+        
+    }
+    
+    func endAllActivities() {
+        for activity in Activity<EventTrackerAttributes>.activities {
+            endActivity( activities: activity)
+        }
+    }
+    
+    func updateActivity(activity: Activity<EventTrackerAttributes>, event: EKEvent) {
+        
+        Task {
+            let alertConfiguration = AlertConfiguration(title: "Event Modification", body: "Event information has been updated.", sound: .default)
+            
+                    
+           
+                let currentTime = Date.now
+                
+                var secondsUntil = event.startDate.timeIntervalSince(currentTime)
+                
+                var address = event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "") + "\n" , with: "") ?? ""
+                address = address.replacingOccurrences(of: "\n", with: "")
+                
+                if currentTime >= event.startDate {
+                secondsUntil = event.endDate.timeIntervalSince(currentTime)
+                }
+            
+         
+           
+                
+                let activityToUpdate = EventTrackerAttributes.EventAttributesStatus(eventName: event.title, eventAddress: address, eventLocation: event.structuredLocation?.title ?? "", startDate: event.startDate, endDate: event.endDate, timerSize: event.isAllDay ? -1 * Int(secondsUntil) : Int(secondsUntil) , eventTimer:  .now +  secondsUntil)
+                
+                await activity.update(using: activityToUpdate, alertConfiguration: alertConfiguration)
+          
+            
+            
+            
         }
         
         
@@ -118,35 +180,55 @@ class CalenderAccesser: NSObject, ObservableObject {
     
     func parseCollectedEvents(events: [EKEvent]) -> [EventInfo] {
         
-        var eventNames: [EventInfo] = []
-        for event in events {
+        var eventsFetched: [EventInfo] = []
         
-            eventNames.append(EventInfo(eventName: event.title, startDate: event.startDate, location: event.structuredLocation?.title ?? "",
-                                        address: event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "`") + "\n" ?? "", with: "") ?? "" ,allDay: event.isAllDay))
+        for event in events {
+          
+           
+            if event.isAllDay == false {
+           
+               
+                let active = Activity<EventTrackerAttributes>.activities.contains(where: {$0.attributes.eventID == event.eventIdentifier})
+                
+                eventsFetched.append(EventInfo(event: event, active: active))
+            }
+                
+            
+         
+                              
         }
         
         
-        return eventNames
+        
+        return eventsFetched
         
     }
     
-    func startActivity(name: String, startTime: Date, eventLocation: String, address: String) {
-        let calendar = Calendar.current
-      
-    
+    func startActivity(eventInfo: EventInfo) {
         let currentTime = Date.now
- 
-        let secondsUntil = startTime.timeIntervalSince(currentTime)
-    
         
-        let event = EventTrackerAttributes(startTime: startTime, eventAddress: address, eventLocation: eventLocation, timerSize: Int(secondsUntil) , eventTimer: .now +  secondsUntil)
-        let initialContentState =  EventTrackerAttributes.ContentState( eventName: name)
-     
+        var secondsUntil = eventInfo.event.startDate.timeIntervalSince(currentTime)
         
+        var address = eventInfo.event.location?.replacingOccurrences(of: (eventInfo.event.structuredLocation?.title ?? "")  , with: "") ?? ""
+        address = address.replacingOccurrences(of: "\n", with: "")
 
+       
+        
+        let eventAttributes = EventTrackerAttributes(eventID: eventInfo.event.eventIdentifier)
+        
+ 
+        if currentTime >= eventInfo.event.startDate {
+            secondsUntil = eventInfo.event.endDate.timeIntervalSince(currentTime)
+        }
+ 
+        print(secondsUntil)
+        let initialContentState =  EventTrackerAttributes.ContentState( eventName: eventInfo.event.title,eventAddress: address, eventLocation:  eventInfo.event.structuredLocation?.title ?? "", startDate: eventInfo.event.startDate, endDate: eventInfo.event.endDate, timerSize: eventInfo.event.isAllDay ? -1 * Int(secondsUntil) : Int(secondsUntil) , eventTimer: .now +  secondsUntil)
+        
+        
+        
         do {
             let deliveryActivity = try Activity.request(
-                attributes: event,
+                attributes: eventAttributes,
                 contentState: initialContentState,
                 pushType: nil)
             print("Requested a event Live Activity \(deliveryActivity.id)")
@@ -156,20 +238,32 @@ class CalenderAccesser: NSObject, ObservableObject {
         }
     }
     
-  
 
-
+    func updateCurrentEvents() -> Bool {
+        
+        
+        if (Activity<EventTrackerAttributes>.activities.count == 1) {
+            let couldExist = events.firstIndex(where: {$0.event.eventIdentifier == Activity<EventTrackerAttributes>.activities[0].attributes.eventID})
+            
+            if let exist = couldExist {
+                if (events[exist].event.endDate > .now) {
+                    updateActivity(activity: Activity<EventTrackerAttributes>.activities[0], event: events[exist].event)
+                    events[exist].active = true;
+                } else {
+                    endActivity(activities: Activity<EventTrackerAttributes>.activities[0])
+                   
+                }
+            } else {
+                endActivity(activities: Activity<EventTrackerAttributes>.activities[0])
+            }
+            
+        }
+       
+        
+        return true
+    }
+    
+    
 }
 
 
-struct EventInfo: Identifiable {
-    
-    var id = UUID()
-    var eventName: String
-    var startDate: Date
-    var location: String
-    var address: String
-    var allDay: Bool
-    
-    
-}
