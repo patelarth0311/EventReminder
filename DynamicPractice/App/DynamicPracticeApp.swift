@@ -25,17 +25,35 @@ struct DynamicPracticeApp: App {
     var body: some Scene {
         WindowGroup {
             
-            ContentView().environmentObject(accesser)
+            ContentView(
+            ).environmentObject(accesser)
+                
                
                
           
         }
         
         
+        
         .onChange(of: phase) { newPhase in
             switch newPhase {
+            case .active:
+                accesser.updateCurrentEvents()
             case .background:
-                scheduleAppRefresh()
+                scheduleActivityEnd()
+                scheduleActivityUpdate()
+            case .inactive:
+                
+                CalenderAccesser.save(events: accesser.events) { result in
+                    switch result {
+                    case .failure(let error):
+                        fatalError(error.localizedDescription)
+                    case .success(let events):
+                        print(events)
+                    }
+                }
+                
+              
                
             default: break;
             }
@@ -49,6 +67,12 @@ struct DynamicPracticeApp: App {
         
             
         }
+        .backgroundTask(.appRefresh("TASKTWO")) {
+           
+            await accesser.updateCurrentEvents()
+        
+            
+        }
         
         
     }
@@ -57,7 +81,7 @@ struct DynamicPracticeApp: App {
 
 
 
-func scheduleAppRefresh()   {
+func scheduleActivityEnd()   {
 
    let request = BGAppRefreshTaskRequest(identifier: "TASK")
 
@@ -85,6 +109,33 @@ func scheduleAppRefresh()   {
    }
 }
 
+func scheduleActivityUpdate()   {
+
+   let request = BGAppRefreshTaskRequest(identifier: "TASKTWO")
+
+ 
+    var startTime = Date.now
+    
+    if #available(iOS 16.1, *) {
+        if Activity<EventTrackerAttributes>.activities.count > 0 && Activity<EventTrackerAttributes>.activities[0].contentState.startDate > Date.now {
+            startTime = Activity<EventTrackerAttributes>.activities[0].contentState.startDate
+        }
+    }
+   
+    
+    request.earliestBeginDate =  startTime
+ 
+   do {
+
+           try BGTaskScheduler.shared.submit(request)
+        print("Scheduled")
+       
+    
+      
+   } catch {
+      print("Could not schedule app refresh: \(error)")
+   }
+}
 
 
 

@@ -7,15 +7,38 @@ import EventKitUI
 
 
 
-struct EventInfo: Identifiable,  Hashable  {
+struct EventInfo: Identifiable, Codable  {
 
+    
     var id = UUID()
     
-    var event: EKEvent
+    var event: Event
     var active: Bool
+    
   
+    init(id: UUID = UUID(), event: Event, active: Bool) {
+        self.id = id
+        self.event = event
+        self.active = active
+    }
+    
+
+}
+
+struct Event: Codable {
+    
+    var eventName: String
+    var eventAddress: String
+    var eventLocation: String
+    var startDate: Date
+    var endDate: Date;
+    var eventIdentifier: String
+    var latitude: CLLocationDegrees?
+    var longitude: CLLocationDegrees?
+
     
     
+   
     
 }
 
@@ -33,6 +56,7 @@ struct EventTrackerAttributes: ActivityAttributes {
         var endDate: Date;
         var timerSize: Int
         var eventTimer: Date
+      
 
         
   
@@ -145,7 +169,7 @@ class CalenderAccesser: NSObject, ObservableObject {
         }
     }
     
-    func updateActivity(activity: Activity<EventTrackerAttributes>, event: EKEvent) {
+    func updateActivity(activity: Activity<EventTrackerAttributes>, event: Event) {
         
         Task {
             let alertConfiguration = AlertConfiguration(title: "Event Modification", body: "Event information has been updated.", sound: .default)
@@ -156,8 +180,7 @@ class CalenderAccesser: NSObject, ObservableObject {
                 
                 var secondsUntil = event.startDate.timeIntervalSince(currentTime)
                 
-                var address = event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "") + "\n" , with: "") ?? ""
-                address = address.replacingOccurrences(of: "\n", with: "")
+    
                 
                 if currentTime >= event.startDate {
                 secondsUntil = event.endDate.timeIntervalSince(currentTime)
@@ -166,7 +189,7 @@ class CalenderAccesser: NSObject, ObservableObject {
          
            
                 
-                let activityToUpdate = EventTrackerAttributes.EventAttributesStatus(eventName: event.title, eventAddress: address, eventLocation: event.structuredLocation?.title ?? "", startDate: event.startDate, endDate: event.endDate, timerSize: event.isAllDay ? -1 * Int(secondsUntil) : Int(secondsUntil) , eventTimer:  .now +  secondsUntil)
+            let activityToUpdate = EventTrackerAttributes.EventAttributesStatus(eventName: event.eventName, eventAddress: event.eventAddress, eventLocation: event.eventLocation, startDate: event.startDate, endDate: event.endDate, timerSize: Int(secondsUntil) , eventTimer:  .now +  secondsUntil)
                 
                 await activity.update(using: activityToUpdate, alertConfiguration: alertConfiguration)
           
@@ -184,10 +207,18 @@ class CalenderAccesser: NSObject, ObservableObject {
         
         for event in events {
           
-           
+          
             if event.isAllDay == false {
            
                
+                var address = event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "") , with: "") ?? ""
+                address = address.replacingOccurrences(of: "\n", with: "")
+                
+             
+                
+                
+                let event = Event(eventName: event.title, eventAddress: address, eventLocation: event.structuredLocation?.title ?? "", startDate:  event.startDate, endDate:  event.endDate, eventIdentifier: event.eventIdentifier, latitude: event.structuredLocation?.geoLocation?.coordinate.latitude, longitude: event.structuredLocation?.geoLocation?.coordinate.longitude )
+                
                 let active = Activity<EventTrackerAttributes>.activities.contains(where: {$0.attributes.eventID == event.eventIdentifier})
                 
                 eventsFetched.append(EventInfo(event: event, active: active))
@@ -197,7 +228,7 @@ class CalenderAccesser: NSObject, ObservableObject {
          
                               
         }
-        
+       
         
         
         return eventsFetched
@@ -209,9 +240,6 @@ class CalenderAccesser: NSObject, ObservableObject {
         
         var secondsUntil = eventInfo.event.startDate.timeIntervalSince(currentTime)
         
-        var address = eventInfo.event.location?.replacingOccurrences(of: (eventInfo.event.structuredLocation?.title ?? "")  , with: "") ?? ""
-        address = address.replacingOccurrences(of: "\n", with: "")
-
        
         
         let eventAttributes = EventTrackerAttributes(eventID: eventInfo.event.eventIdentifier)
@@ -221,19 +249,18 @@ class CalenderAccesser: NSObject, ObservableObject {
             secondsUntil = eventInfo.event.endDate.timeIntervalSince(currentTime)
         }
  
-        print(secondsUntil)
-        let initialContentState =  EventTrackerAttributes.ContentState( eventName: eventInfo.event.title,eventAddress: address, eventLocation:  eventInfo.event.structuredLocation?.title ?? "", startDate: eventInfo.event.startDate, endDate: eventInfo.event.endDate, timerSize: eventInfo.event.isAllDay ? -1 * Int(secondsUntil) : Int(secondsUntil) , eventTimer: .now +  secondsUntil)
+        let initialContentState =  EventTrackerAttributes.ContentState( eventName: eventInfo.event.eventName, eventAddress: eventInfo.event.eventAddress, eventLocation:  eventInfo.event.eventLocation, startDate: eventInfo.event.startDate, endDate: eventInfo.event.endDate, timerSize:  Int(secondsUntil) , eventTimer: .now +  secondsUntil)
         
         
         
         do {
-            let deliveryActivity = try Activity.request(
+            let eventActivity = try Activity.request(
                 attributes: eventAttributes,
                 contentState: initialContentState,
                 pushType: nil)
-            print("Requested a event Live Activity \(deliveryActivity.id)")
+            print("Requested a event Live Activity \(eventActivity.id)")
         } catch (let error) {
-            print(error)
+           
             print("Error requesting event Live Activity \(error.localizedDescription)")
         }
     }
@@ -263,6 +290,55 @@ class CalenderAccesser: NSObject, ObservableObject {
         return true
     }
     
+    
+    private static func fileURL() throws -> URL {
+         try FileManager.default.url(for: .documentDirectory,
+                                        in: .userDomainMask,
+                                        appropriateFor: nil,
+                                        create: false)
+         .appendingPathComponent("events.data", conformingTo: .data)
+            
+ 
+     }
+    
+    static func load(completion: @escaping (Result<[EventInfo], Error>)->Void) {
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    let fileURL = try fileURL()
+                    guard let file = try? FileHandle(forReadingFrom: fileURL) else {
+                        DispatchQueue.main.async {
+                            completion(.success([]))
+                        }
+                        return
+                    }
+                    let events = try JSONDecoder().decode([EventInfo].self, from: file.availableData)
+                    DispatchQueue.main.async {
+                        completion(.success(events))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+    
+    static func save(events: [EventInfo], completion: @escaping (Result<Int, Error>)->Void) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let data = try JSONEncoder().encode(events)
+                let outfile = try fileURL()
+                try data.write(to: outfile)
+                DispatchQueue.main.async {
+                    completion(.success(events.count))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
     
 }
 

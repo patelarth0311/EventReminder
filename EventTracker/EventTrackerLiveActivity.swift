@@ -9,6 +9,7 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 import EventKit
+import _MapKit_SwiftUI
 
 
 
@@ -38,7 +39,7 @@ struct EventTrackerLiveActivity: Widget {
                         HStack {
                            
                                 
-                            Image(systemName: context.state.startDate >= .now ? "calendar" : "calendar.badge.clock")
+                            Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
                                 .foregroundColor(Color("Color"))
                                 .font(.system(.title2, design: .monospaced))
                             
@@ -103,7 +104,7 @@ struct EventTrackerLiveActivity: Widget {
                                 
                             
                            
-                            Text( context.state.startDate >= .now ? "From \(context.state.startDate.formatted(.dateTime.weekday().day().month().hour().minute())) until \(context.state.endDate.formatted(.dateTime.hour().minute()))" : "Ends at \(context.state.endDate.formatted(.dateTime.hour().minute()))" )
+                            Text( context.state.startDate > .now ? "From \(context.state.startDate.formatted(.dateTime.weekday().day().month().hour().minute())) until \(context.state.endDate.formatted(.dateTime.hour().minute()))" : "Ends at \(context.state.endDate.formatted(.dateTime.hour().minute()))" )
                                 
                                 .font(.system(.caption, design: .monospaced))
                                 .foregroundColor(Color("Color"))
@@ -148,7 +149,7 @@ struct EventTrackerLiveActivity: Widget {
                 
             } compactLeading: {
                 
-                Image(systemName: context.state.startDate >= .now ? "calendar" : "calendar.badge.clock")
+                Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
                     .foregroundColor(Color("Color"))
                     .font(.system(.title2, design: .monospaced))
                 
@@ -161,10 +162,10 @@ struct EventTrackerLiveActivity: Widget {
                     .font(.system(.subheadline, design: .monospaced))
                     .fontWeight(.bold)
                     .foregroundColor(Color("Color"))
-                    .frame(width: context.state.timerSize <= 3599 ? 51 : context.state.timerSize < 36000 ? 70 : 80)
+                    .frame(width: context.state.timerSize <= 3599 ? 51 : context.state.timerSize < 36000 ? 70 : 79)
             } minimal: {
                 
-                Image(systemName: context.state.startDate >= .now ? "calendar" : "calendar.badge.clock")
+                Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
                     .foregroundColor(Color("Color"))
                     .font(.system(.title2, design: .monospaced))
                
@@ -189,7 +190,7 @@ struct LockScreenView: View {
             
             HStack {
                 
-                Image(systemName: context.state.startDate >= .now ? "calendar" : "calendar.badge.clock")
+                Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
                     .foregroundColor(Color("Color"))
                     .font(.system(.title2, design: .monospaced))
                    
@@ -216,7 +217,6 @@ struct LockScreenView: View {
                     .fontWeight(.bold)
                    
                 
-                    .foregroundColor(.white)
                   
                    
                     
@@ -235,10 +235,10 @@ struct LockScreenView: View {
                          
                     }
                     
-                    
+                 
                     
                   
-                    Text( context.state.startDate >= .now ? "From \(context.state.startDate.formatted(.dateTime.weekday().day().month().hour().minute())) until \(context.state.endDate.formatted(.dateTime.hour().minute()))" : "Ends at \(context.state.endDate.formatted(.dateTime.hour().minute()))" )
+                    Text( context.state.startDate > .now ? "From \(context.state.startDate.formatted(.dateTime.weekday().day().month().hour().minute())) until \(context.state.endDate.formatted(.dateTime.hour().minute()))" : "Ends at \(context.state.endDate.formatted(.dateTime.hour().minute()))" )
                         .multilineTextAlignment(.leading)
                         .font(.system(.caption, design: .monospaced))
                         .foregroundColor(Color("Color"))
