@@ -14,23 +14,21 @@ import ActivityKit
 @main
 
 struct DynamicPracticeApp: App {
-
-
+    
+    
     
     @StateObject var accesser =  CalenderAccesser()
     
     
     @Environment(\.scenePhase) private var phase
-  
+    
     var body: some Scene {
         WindowGroup {
             
             ContentView(
             ).environmentObject(accesser)
-                
-               
-               
-          
+            
+            
         }
         
         
@@ -38,6 +36,7 @@ struct DynamicPracticeApp: App {
         .onChange(of: phase) { newPhase in
             switch newPhase {
             case .active:
+                accesser.fetchCurrentEvents()
                 accesser.updateCurrentEvents()
             case .background:
                 scheduleActivityEnd()
@@ -53,8 +52,8 @@ struct DynamicPracticeApp: App {
                     }
                 }
                 
-              
-               
+                
+                
             default: break;
             }
             
@@ -62,30 +61,28 @@ struct DynamicPracticeApp: App {
         
         
         .backgroundTask(.appRefresh("TASK")) {
-           
+            
             await accesser.endAllActivities()
-        
+            
             
         }
         .backgroundTask(.appRefresh("TASKTWO")) {
-           
+            
             await accesser.updateCurrentEvents()
-        
+            
             
         }
         
         
     }
-        
+    
 }
 
 
 
 func scheduleActivityEnd()   {
-
-   let request = BGAppRefreshTaskRequest(identifier: "TASK")
-
- 
+    
+    let request = BGAppRefreshTaskRequest(identifier: "TASK")
     var endTime = Date.now
     
     if #available(iOS 16.1, *) {
@@ -93,27 +90,20 @@ func scheduleActivityEnd()   {
             endTime = Activity<EventTrackerAttributes>.activities[0].contentState.endDate
         }
     }
-   
-    
     request.earliestBeginDate =  endTime
- 
-   do {
-
-           try BGTaskScheduler.shared.submit(request)
+    do {
+        try BGTaskScheduler.shared.submit(request)
         print("Scheduled")
-       
-    
-      
-   } catch {
-      print("Could not schedule app refresh: \(error)")
-   }
+        
+    } catch {
+        print("Could not schedule app refresh: \(error)")
+    }
 }
 
+
 func scheduleActivityUpdate()   {
-
-   let request = BGAppRefreshTaskRequest(identifier: "TASKTWO")
-
- 
+    
+    let request = BGAppRefreshTaskRequest(identifier: "TASKTWO")
     var startTime = Date.now
     
     if #available(iOS 16.1, *) {
@@ -121,20 +111,18 @@ func scheduleActivityUpdate()   {
             startTime = Activity<EventTrackerAttributes>.activities[0].contentState.startDate
         }
     }
-   
-    
+  
     request.earliestBeginDate =  startTime
- 
-   do {
-
-           try BGTaskScheduler.shared.submit(request)
-        print("Scheduled")
-       
     
-      
-   } catch {
-      print("Could not schedule app refresh: \(error)")
-   }
+    do {
+        try BGTaskScheduler.shared.submit(request)
+        print("Scheduled")
+        
+    } catch {
+        print("Could not schedule app refresh: \(error)")
+    }
+    
+    
 }
 
 
