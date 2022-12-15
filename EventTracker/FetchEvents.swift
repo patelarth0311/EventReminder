@@ -1,4 +1,5 @@
 import UIKit
+import BackgroundTasks
 import SwiftUI
 
 import ActivityKit
@@ -11,22 +12,17 @@ struct EventInfo: Identifiable, Codable  {
     
     
     var id = UUID()
-    
     var event: Event
     var active: Bool
-    
-    
     init(id: UUID = UUID(), event: Event, active: Bool) {
         self.id = id
         self.event = event
         self.active = active
     }
     
-    
 }
 
 struct Event: Codable {
-    
     var eventName: String
     var eventAddress: String
     var eventLocation: String
@@ -35,11 +31,6 @@ struct Event: Codable {
     var eventIdentifier: String
     var latitude: CLLocationDegrees?
     var longitude: CLLocationDegrees?
-    
-    
-    
-    
-    
 }
 
 
@@ -48,7 +39,6 @@ struct EventTrackerAttributes: ActivityAttributes {
     public typealias EventAttributesStatus = ContentState
     
     public struct ContentState: Codable, Hashable {
-        
         var eventName: String
         var eventAddress: String
         var eventLocation: String
@@ -56,18 +46,8 @@ struct EventTrackerAttributes: ActivityAttributes {
         var endDate: Date;
         var timerSize: Int
         var eventTimer: Date
-        
-        
-        
-        
     }
-    
     var eventID : String
-    
-    
-    
-    
-    
 }
 
 
@@ -78,10 +58,7 @@ class CalenderAccesser: NSObject, ObservableObject {
     var store: EKEventStore!
     
     @Published var events: [EventInfo] = []
-    
     @Published var kEvents: [EKEvent] = []
-    
-    
     
     
     override init() {
@@ -174,28 +151,36 @@ class CalenderAccesser: NSObject, ObservableObject {
         Task {
             let alertConfiguration = AlertConfiguration(title: "Event Modification", body: "Event information has been updated.", sound: .default)
             
-            
-            
             let currentTime = Date.now
             
             var secondsUntil = event.startDate.timeIntervalSince(currentTime)
-            
-            
             
             if currentTime >= event.startDate {
                 secondsUntil = event.endDate.timeIntervalSince(currentTime)
             }
             
-            
-            
-            
             let activityToUpdate = EventTrackerAttributes.EventAttributesStatus(eventName: event.eventName, eventAddress: event.eventAddress, eventLocation: event.eventLocation, startDate: event.startDate, endDate: event.endDate, timerSize: Int(secondsUntil) , eventTimer:  .now +  secondsUntil)
             
             await activity.update(using: activityToUpdate, alertConfiguration: alertConfiguration)
             
+            if (currentTime > event.endDate) {
+                let request = BGAppRefreshTaskRequest(identifier: "TASKTWO")
+             
+                    request.earliestBeginDate =  event.endDate
+                    
+                    do {
+                        try BGTaskScheduler.shared.submit(request)
+                        print("Task scheduled: Activity removal")
+                        print( event.endDate.formatted())
+                        
+                    } catch {
+                        print("Could not schedule app refresh: \(error)")
+                    }
+                    
+            }
+        
             
-            
-            
+
         }
         
         
@@ -206,26 +191,16 @@ class CalenderAccesser: NSObject, ObservableObject {
         var eventsFetched: [EventInfo] = []
         
         for event in events {
-            
-            
             if event.isAllDay == false {
-                
                 
                 var address = event.location?.replacingOccurrences(of: (event.structuredLocation?.title ?? "") , with: "") ?? ""
                 address = address.replacingOccurrences(of: "\n", with: "")
-                
-                
-                
-                
                 let event = Event(eventName: event.title, eventAddress: address, eventLocation: event.structuredLocation?.title ?? "", startDate:  event.startDate, endDate:  event.endDate, eventIdentifier: event.eventIdentifier, latitude: event.structuredLocation?.geoLocation?.coordinate.latitude, longitude: event.structuredLocation?.geoLocation?.coordinate.longitude )
                 
                 let active = Activity<EventTrackerAttributes>.activities.contains(where: {$0.attributes.eventID == event.eventIdentifier})
                 
                 eventsFetched.append(EventInfo(event: event, active: active))
             }
-            
-            
-            
             
         }
         
@@ -239,19 +214,11 @@ class CalenderAccesser: NSObject, ObservableObject {
         let currentTime = Date.now
         
         var secondsUntil = eventInfo.event.startDate.timeIntervalSince(currentTime)
-        
-        
-        
         let eventAttributes = EventTrackerAttributes(eventID: eventInfo.event.eventIdentifier)
-        
-        
         if currentTime >= eventInfo.event.startDate {
             secondsUntil = eventInfo.event.endDate.timeIntervalSince(currentTime)
         }
-        
         let initialContentState =  EventTrackerAttributes.ContentState( eventName: eventInfo.event.eventName, eventAddress: eventInfo.event.eventAddress, eventLocation:  eventInfo.event.eventLocation, startDate: eventInfo.event.startDate, endDate: eventInfo.event.endDate, timerSize:  Int(secondsUntil) , eventTimer: .now +  secondsUntil)
-        
-        
         
         do {
             let eventActivity = try Activity.request(
@@ -268,14 +235,12 @@ class CalenderAccesser: NSObject, ObservableObject {
     
     func updateCurrentEvents() -> Bool {
         
-        
         if (Activity<EventTrackerAttributes>.activities.count == 1) {
             let couldExist = events.firstIndex(where: {$0.event.eventIdentifier == Activity<EventTrackerAttributes>.activities[0].attributes.eventID})
             
             if let exist = couldExist {
                 if (events[exist].event.endDate > .now) {
                     updateActivity(activity: Activity<EventTrackerAttributes>.activities[0], event: events[exist].event)
-                    print( events[exist].event)
                 
                 } else {
                     endActivity(activities: Activity<EventTrackerAttributes>.activities[0])

@@ -31,24 +31,19 @@ struct EventTrackerLiveActivity: Widget {
                 // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading, priority: 1) {
                  
-                        
                         HStack {
                             Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
                                 .foregroundColor(Color("Color"))
-                                .font(.system(.title, design: .monospaced))
-                            
-                            
-                            
+                                .font(.system(.title2, design: .monospaced))
+                                
                         }
-                    
-                    
                 }
                 
                 DynamicIslandExpandedRegion(.trailing,  priority: 1) {
                     VStack {
                         Text(context.state.eventTimer, style: .timer)
                             .multilineTextAlignment(.center)
-                            .font(.system(.title3, design: .monospaced))
+                            .font(.system(.title2, design: .monospaced))
                             .fontWeight(.bold)
                             .foregroundColor(Color("Color"))
                     }
@@ -56,17 +51,17 @@ struct EventTrackerLiveActivity: Widget {
                 }
                 
                 DynamicIslandExpandedRegion(.bottom, priority: 1) {
-                    VStack (alignment: .center){
-                        Spacer()
+                    VStack (alignment: .center, spacing: 3){
+                       
                         Text("\(context.state.eventName)")
                             .font(.system(.subheadline, design: .monospaced))
                             .fontWeight(.bold)
                         
-                        
+                       
                             .foregroundColor(.white)
                         
                         
-                        Spacer()
+                       
                         VStack (alignment: .leading){
                             
                             if (!context.state.eventLocation.isEmpty) {
@@ -77,29 +72,15 @@ struct EventTrackerLiveActivity: Widget {
                             if (!context.state.eventAddress.isEmpty) {
                                 Text("\(context.state.eventAddress)")
                                     .font(.system(.footnote, design: .monospaced))
-                                
-                                
                             }
-                            
-                            
-                            
-                            
-                            
-                            
                             Text( context.state.startDate > .now ? "Today \(context.state.startDate.formatted(.dateTime.weekday().day().month().hour().minute())) until \(context.state.endDate.formatted(.dateTime.hour().minute()))" : "Ends at \(context.state.endDate.formatted(.dateTime.hour().minute()))" )
                             
                                 .font(.system(.caption, design: .monospaced))
                                 .foregroundColor(Color("Color"))
-                            
-                            
-                            
-                            
                         }
                         .foregroundColor(.secondary)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
-                        
-                        
                     }
                     
                 }
@@ -118,7 +99,7 @@ struct EventTrackerLiveActivity: Widget {
                     .font(.system(.subheadline, design: .monospaced))
                     .fontWeight(.bold)
                     .foregroundColor(Color("Color"))
-                    .frame(width: context.state.timerSize <= 3599 ? 51 : context.state.timerSize < 36000 ? 70 : 79)
+                    .frame(width: context.state.timerSize <= 3599 ? 51 : context.state.timerSize < 36000 ? 66 : 79)
             } minimal: {
                 
                 Image(systemName: context.state.startDate > .now ? "calendar" : "calendar.badge.clock")
@@ -146,17 +127,17 @@ struct LockScreenView: View {
                 Spacer()
                 Text(context.state.eventTimer, style: .timer)
                     .multilineTextAlignment(.trailing)
-                    .font(.system(.title3, design: .monospaced))
+                    .font(.system(.title, design: .monospaced))
                     .fontWeight(.bold)
                     .foregroundColor(Color("Color"))
             }
             
-            VStack (alignment: .leading){
+            VStack (alignment: .leading, spacing: 5){
                
                 Text("\(context.state.eventName)")
                     .font(.system(.subheadline, design: .monospaced))
                     .fontWeight(.bold)
-                Spacer()
+            
                 VStack(alignment: .leading)  {
                     
                     if (!context.state.eventLocation.isEmpty) {
@@ -173,6 +154,7 @@ struct LockScreenView: View {
                         .multilineTextAlignment(.leading)
                         .font(.system(.caption, design: .monospaced))
                         .foregroundColor(Color("Color"))
+                    Spacer()
                        
                 }
                 .foregroundColor(.secondary)

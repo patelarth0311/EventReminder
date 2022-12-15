@@ -19,59 +19,34 @@ struct ContentView: View {
     
     @EnvironmentObject var accesser: CalenderAccesser
     
-    
-    
     var body: some View {
-        
-        
         NavigationView {
-            
             List {
                 Section{
                     EventView()
                         .environmentObject(accesser)
-                    
-                    
-                    
                 } header: {
                     Text("\(Date.now.formatted(date: .complete, time: .omitted))")
                 }
-                
-                
             }
             .background(Color(UIColor.secondarySystemBackground))
-            
-            
-            
             .navigationTitle("Events")
-            
-            
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     
                     Button("\(Image(systemName: "calendar.badge.plus"))") {
                         accesser.fetchCurrentEvents()
-                        
-                        
                     }
                     .font(.system(.title3, design: .default))
                     .foregroundColor(Color("Color"))
-                    
                 }
             }
-            
         }
         .environmentObject(accesser)
         
         .refreshable {
-            
-            
             accesser.updateCurrentEvents()
-            
-            
         }
-        
-        
         .onReceive(NotificationCenter.default.publisher(for: .EKEventStoreChanged, object:  accesser.store)) {
             (output) in
             accesser.fetchCurrentEvents()
@@ -83,18 +58,11 @@ struct ContentView: View {
                 case .success(let events):
                     print(events)
                 case .failure(let fail):
-                    fatalError(fail.localizedDescription)
+                    print(fail.localizedDescription)
                 }
             }
         }
-        
-        
-        
-        
     }
-    
-    
-    
 }
 
 
@@ -108,85 +76,70 @@ struct EventView: View {
     
     var body: some View {
         
-        ForEach(Array(zip(accesser.events.indices, accesser.events)), id: \.0) { index, item in
+        if (accesser.events.count == 0) {
+            Text("No events scheduled")
+                .font(.system(.headline, design: .monospaced))
+        } else {
             
-            VStack {
+            
+            ForEach(Array(zip(accesser.events.indices, accesser.events)), id: \.0) { index, item in
                 
-                Spacer()
-                HStack {
-                    VStack  (alignment: .leading, spacing: 10){
-                        Text( accesser.events[index].event.eventName)
-                            .font(.system(.headline, design: .monospaced))
-                        
-                        VStack (alignment: .leading) {
+                VStack {
+                    
+                    Spacer()
+                    HStack {
+                        VStack  (alignment: .leading, spacing: 10){
+                            Text( accesser.events[index].event.eventName)
+                                .font(.system(.headline, design: .monospaced))
                             
-                            Text( accesser.events[index].event.eventLocation)
-                            
-                                .font(.system(.footnote, design: .monospaced))
-                            
-                            Text( accesser.events[index].event.eventAddress)
-                                .font(.system(.footnote, design: .monospaced))
-                            Text("From \(accesser.events[index].event.startDate.formatted(.dateTime.hour().minute())) to \(accesser.events[index].event.endDate.formatted(.dateTime.hour().minute()))")
-                                .font(.system(.caption, design: .monospaced))
-                                .foregroundColor(Color("Color"))
-                            
-                            
-                            if let latitude = accesser.events[index].event.latitude,  let longitude = accesser.events[index].event.longitude {
-                                let markers = [IdentifiablePlace(lat: latitude, long: longitude)]
+                            VStack (alignment: .leading) {
+                                
+                                Text( accesser.events[index].event.eventLocation)
+                                
+                                    .font(.system(.footnote, design: .monospaced))
+                                
+                                Text( accesser.events[index].event.eventAddress)
+                                    .font(.system(.footnote, design: .monospaced))
+                                Text("From \(accesser.events[index].event.startDate.formatted(.dateTime.hour().minute())) to \(accesser.events[index].event.endDate.formatted(.dateTime.hour().minute()))")
+                                    .font(.system(.caption, design: .monospaced))
+                                    .foregroundColor(Color("Color"))
                                 
                                 
-                                
-                                let region: MKCoordinateRegion = MKCoordinateRegion(center:  CLLocationCoordinate2D(latitude: accesser.events[index].event.latitude!, longitude: accesser.events[index].event.longitude!), latitudinalMeters: 500, longitudinalMeters: 500)
-                                
-                                
-                                
-                                
-                                let check_url = URL(string: "maps://?q=\(accesser.events[index].event.eventLocation.filter { !$0.isWhitespace }+accesser.events[index].event.eventAddress.filter { !$0.isWhitespace })")
-                                
-                                EventLocationView(markers: markers, region: region, openMaps: {
-                                    if let url = check_url {
-                                        
-                                        if UIApplication.shared.canOpenURL(url) {
-                                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                                        }
-                                    }
+                                if let latitude = accesser.events[index].event.latitude,  let longitude = accesser.events[index].event.longitude {
+                                    let markers = [IdentifiablePlace(lat: latitude, long: longitude)]
                                     
-                                })
-                                
-                                .frame(height:200)
+                                    let region: MKCoordinateRegion = MKCoordinateRegion(center:  CLLocationCoordinate2D(latitude: accesser.events[index].event.latitude!, longitude: accesser.events[index].event.longitude!), latitudinalMeters: 500, longitudinalMeters: 500)
+                                    
+                                    let check_url = URL(string: "maps://?q=\(accesser.events[index].event.eventLocation.filter { !$0.isWhitespace }+accesser.events[index].event.eventAddress.filter { !$0.isWhitespace })")
+                                    
+                                    EventLocationView(markers: markers, region: region, openMaps: {
+                                        if let url = check_url {
+                                            
+                                            if UIApplication.shared.canOpenURL(url) {
+                                                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                            }
+                                        }
+                                        
+                                    })
+                                    
+                                    .frame(height:200)
+                                    Spacer()
+                                }
+                                ToggleItem(  item: accesser.events[index], index: index)
+                                    .environmentObject(accesser)
                                 Spacer()
                                 
-                                
-                                
-                                
-                                
-                                
                             }
-                            
-                            
-                            ToggleItem(  item: accesser.events[index], index: index)
-                                .environmentObject(accesser)
-                            
-                            
-                            
-                            
-                            Spacer()
-                            
                         }
                     }
                 }
+                .environmentObject(accesser)
             }
-            
-            
         }
-        .environmentObject(accesser)
+     
+       
     }
-    
-    
-    
-    
-    
-    
+       
 }
 
 
@@ -206,24 +159,16 @@ struct ToggleItem: View {
             Toggle (isOn: Binding (get: {item.active},
                                    set: { value in
                 withAnimation {
-                    
-                    
                     for (i, _) in accesser.events.enumerated() {
                         
                         if (i != index) {
                             accesser.events[i].active = false
-                            
                         } else {
-                            
                             if ( accesser.events[index].active) {
                                 accesser.events[index].active = false
                             } else {
                                 accesser.events[index].active = true
                             }
-                            
-                            
-                            
-                            
                         }
                     }
                     
@@ -239,14 +184,6 @@ struct ToggleItem: View {
                             .foregroundColor(Color("Color"))
                             .font(.system(.title3, design: .monospaced))
                             .fontWeight(.bold)
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                     }
                     
                 } else {
@@ -257,11 +194,7 @@ struct ToggleItem: View {
                         
                     }
                     .font(.system(.caption, design: .monospaced))
-                    
-                    
                 }
-                
-                
             }
             
             .tint(Color("Color") )
@@ -270,28 +203,14 @@ struct ToggleItem: View {
             
             .onTapGesture
             {
-                
-                
                 accesser.endAllActivities()
                 
                 if !item.active{
                     accesser.startActivity(eventInfo: item);
-                    
                 }
-                
-                
-                
-                
             }
         }
-        
-        
-        
-        
     }
-    
-    
-    
 }
 
 
@@ -300,31 +219,21 @@ struct EventLocationView: View {
     
     var markers: [IdentifiablePlace]
     var region: MKCoordinateRegion
-    
     let openMaps: ()->Void
     
-    
     var body: some View {
-        
         Map(coordinateRegion: .constant(region), showsUserLocation: true, userTrackingMode: .constant(.follow), annotationItems: markers) { marker in
-            
             MapAnnotation(coordinate: marker.location) {
                 Image(systemName: "mappin.circle.fill")
                     .foregroundColor(.pink)
                     .tint(.white)
                     .font(.title2)
-                
-                
             }
         }
-        
         .onTapGesture {
             openMaps()
         }
-        
         .cornerRadius(10)
-        
-        
     }
 }
 
@@ -337,11 +246,4 @@ struct IdentifiablePlace: Identifiable {
             latitude: lat,
             longitude: long)
     }
-}
-
-class EventLocation: ObservableObject {
-    
-    @Published var coordinates = [CLLocationCoordinate2D]()
-    
-    
 }

@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F26191C528FBCD9800A1240E /* DynamicPracticeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191C428FBCD9800A1240E /* DynamicPracticeApp.swift */; };
+		F26191C528FBCD9800A1240E /* EventReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191C428FBCD9800A1240E /* EventReminderApp.swift */; };
 		F26191C728FBCD9800A1240E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191C628FBCD9800A1240E /* ContentView.swift */; };
 		F26191C928FBCD9A00A1240E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F26191C828FBCD9A00A1240E /* Assets.xcassets */; };
 		F26191CC28FBCD9A00A1240E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F26191CB28FBCD9A00A1240E /* Preview Assets.xcassets */; };
-		F26191D628FBCD9A00A1240E /* DynamicPracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191D528FBCD9A00A1240E /* DynamicPracticeTests.swift */; };
-		F26191E028FBCD9A00A1240E /* DynamicPracticeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191DF28FBCD9A00A1240E /* DynamicPracticeUITests.swift */; };
-		F26191E228FBCD9A00A1240E /* DynamicPracticeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191E128FBCD9A00A1240E /* DynamicPracticeUITestsLaunchTests.swift */; };
+		F26191D628FBCD9A00A1240E /* EventReminderPracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191D528FBCD9A00A1240E /* EventReminderPracticeTests.swift */; };
+		F26191E028FBCD9A00A1240E /* EventReminderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191DF28FBCD9A00A1240E /* EventReminderUITests.swift */; };
+		F26191E228FBCD9A00A1240E /* EventReminderUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191E128FBCD9A00A1240E /* EventReminderUITestsLaunchTests.swift */; };
 		F26191EF28FBCF9100A1240E /* FetchEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26191EE28FBCF9000A1240E /* FetchEvents.swift */; };
 		F2B5630328FCE2750037A972 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B5630228FCE2750037A972 /* WidgetKit.framework */; };
 		F2B5630528FCE2750037A972 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B5630428FCE2750037A972 /* SwiftUI.framework */; };
@@ -68,16 +68,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F26191C128FBCD9800A1240E /* DynamicPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DynamicPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F26191C428FBCD9800A1240E /* DynamicPracticeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPracticeApp.swift; sourceTree = "<group>"; };
+		F26191C128FBCD9800A1240E /* EventReminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EventReminder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F26191C428FBCD9800A1240E /* EventReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReminderApp.swift; sourceTree = "<group>"; };
 		F26191C628FBCD9800A1240E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F26191C828FBCD9A00A1240E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F26191CB28FBCD9A00A1240E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F26191D128FBCD9A00A1240E /* DynamicPracticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DynamicPracticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F26191D528FBCD9A00A1240E /* DynamicPracticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPracticeTests.swift; sourceTree = "<group>"; };
-		F26191DB28FBCD9A00A1240E /* DynamicPracticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DynamicPracticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F26191DF28FBCD9A00A1240E /* DynamicPracticeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPracticeUITests.swift; sourceTree = "<group>"; };
-		F26191E128FBCD9A00A1240E /* DynamicPracticeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPracticeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F26191D128FBCD9A00A1240E /* EventReminderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventReminderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F26191D528FBCD9A00A1240E /* EventReminderPracticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReminderPracticeTests.swift; sourceTree = "<group>"; };
+		F26191DB28FBCD9A00A1240E /* EventReminderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EventReminderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F26191DF28FBCD9A00A1240E /* EventReminderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReminderUITests.swift; sourceTree = "<group>"; };
+		F26191E128FBCD9A00A1240E /* EventReminderUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReminderUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F26191EE28FBCF9000A1240E /* FetchEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchEvents.swift; sourceTree = "<group>"; usesTabs = 0; };
 		F2B5630028FCE2750037A972 /* EventTrackerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EventTrackerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2B5630228FCE2750037A972 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -128,9 +128,9 @@
 		F26191B828FBCD9800A1240E = {
 			isa = PBXGroup;
 			children = (
-				F26191C328FBCD9800A1240E /* DynamicPractice */,
-				F26191D428FBCD9A00A1240E /* DynamicPracticeTests */,
-				F26191DE28FBCD9A00A1240E /* DynamicPracticeUITests */,
+				F26191C328FBCD9800A1240E /* EventReminder */,
+				F26191D428FBCD9A00A1240E /* EventReminderTests */,
+				F26191DE28FBCD9A00A1240E /* EventReminderUITests */,
 				F2B5630628FCE2750037A972 /* EventTracker */,
 				F2B5630128FCE2750037A972 /* Frameworks */,
 				F26191C228FBCD9800A1240E /* Products */,
@@ -140,22 +140,22 @@
 		F26191C228FBCD9800A1240E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F26191C128FBCD9800A1240E /* DynamicPractice.app */,
-				F26191D128FBCD9A00A1240E /* DynamicPracticeTests.xctest */,
-				F26191DB28FBCD9A00A1240E /* DynamicPracticeUITests.xctest */,
+				F26191C128FBCD9800A1240E /* EventReminder.app */,
+				F26191D128FBCD9A00A1240E /* EventReminderTests.xctest */,
+				F26191DB28FBCD9A00A1240E /* EventReminderUITests.xctest */,
 				F2B5630028FCE2750037A972 /* EventTrackerExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F26191C328FBCD9800A1240E /* DynamicPractice */ = {
+		F26191C328FBCD9800A1240E /* EventReminder */ = {
 			isa = PBXGroup;
 			children = (
 				F2B562F928FCE1000037A972 /* App */,
 				F26191C828FBCD9A00A1240E /* Assets.xcassets */,
 				F26191CA28FBCD9A00A1240E /* Preview Content */,
 			);
-			path = DynamicPractice;
+			path = EventReminder;
 			sourceTree = "<group>";
 		};
 		F26191CA28FBCD9A00A1240E /* Preview Content */ = {
@@ -166,28 +166,28 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		F26191D428FBCD9A00A1240E /* DynamicPracticeTests */ = {
+		F26191D428FBCD9A00A1240E /* EventReminderTests */ = {
 			isa = PBXGroup;
 			children = (
-				F26191D528FBCD9A00A1240E /* DynamicPracticeTests.swift */,
+				F26191D528FBCD9A00A1240E /* EventReminderPracticeTests.swift */,
 			);
-			path = DynamicPracticeTests;
+			path = EventReminderTests;
 			sourceTree = "<group>";
 		};
-		F26191DE28FBCD9A00A1240E /* DynamicPracticeUITests */ = {
+		F26191DE28FBCD9A00A1240E /* EventReminderUITests */ = {
 			isa = PBXGroup;
 			children = (
-				F26191DF28FBCD9A00A1240E /* DynamicPracticeUITests.swift */,
-				F26191E128FBCD9A00A1240E /* DynamicPracticeUITestsLaunchTests.swift */,
+				F26191DF28FBCD9A00A1240E /* EventReminderUITests.swift */,
+				F26191E128FBCD9A00A1240E /* EventReminderUITestsLaunchTests.swift */,
 			);
-			path = DynamicPracticeUITests;
+			path = EventReminderUITests;
 			sourceTree = "<group>";
 		};
 		F2B562F928FCE1000037A972 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				F26191C628FBCD9800A1240E /* ContentView.swift */,
-				F26191C428FBCD9800A1240E /* DynamicPracticeApp.swift */,
+				F26191C428FBCD9800A1240E /* EventReminderApp.swift */,
 				F2CFE71028FCEA4E003D268E /* Info.plist */,
 			);
 			path = App;
@@ -219,9 +219,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F26191C028FBCD9800A1240E /* DynamicPractice */ = {
+		F26191C028FBCD9800A1240E /* EventReminder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F26191E528FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPractice" */;
+			buildConfigurationList = F26191E528FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminder" */;
 			buildPhases = (
 				F26191BD28FBCD9800A1240E /* Sources */,
 				F26191BE28FBCD9800A1240E /* Frameworks */,
@@ -233,14 +233,14 @@
 			dependencies = (
 				F2B5631428FCE2770037A972 /* PBXTargetDependency */,
 			);
-			name = DynamicPractice;
+			name = EventReminder;
 			productName = DynamicPractice;
-			productReference = F26191C128FBCD9800A1240E /* DynamicPractice.app */;
+			productReference = F26191C128FBCD9800A1240E /* EventReminder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F26191D028FBCD9A00A1240E /* DynamicPracticeTests */ = {
+		F26191D028FBCD9A00A1240E /* EventReminderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F26191E828FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPracticeTests" */;
+			buildConfigurationList = F26191E828FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminderTests" */;
 			buildPhases = (
 				F26191CD28FBCD9A00A1240E /* Sources */,
 				F26191CE28FBCD9A00A1240E /* Frameworks */,
@@ -251,14 +251,14 @@
 			dependencies = (
 				F26191D328FBCD9A00A1240E /* PBXTargetDependency */,
 			);
-			name = DynamicPracticeTests;
+			name = EventReminderTests;
 			productName = DynamicPracticeTests;
-			productReference = F26191D128FBCD9A00A1240E /* DynamicPracticeTests.xctest */;
+			productReference = F26191D128FBCD9A00A1240E /* EventReminderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F26191DA28FBCD9A00A1240E /* DynamicPracticeUITests */ = {
+		F26191DA28FBCD9A00A1240E /* EventReminderUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F26191EB28FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPracticeUITests" */;
+			buildConfigurationList = F26191EB28FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminderUITests" */;
 			buildPhases = (
 				F26191D728FBCD9A00A1240E /* Sources */,
 				F26191D828FBCD9A00A1240E /* Frameworks */,
@@ -269,9 +269,9 @@
 			dependencies = (
 				F26191DD28FBCD9A00A1240E /* PBXTargetDependency */,
 			);
-			name = DynamicPracticeUITests;
+			name = EventReminderUITests;
 			productName = DynamicPracticeUITests;
-			productReference = F26191DB28FBCD9A00A1240E /* DynamicPracticeUITests.xctest */;
+			productReference = F26191DB28FBCD9A00A1240E /* EventReminderUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		F2B562FF28FCE2750037A972 /* EventTrackerExtension */ = {
@@ -317,7 +317,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F26191BC28FBCD9800A1240E /* Build configuration list for PBXProject "DynamicPractice" */;
+			buildConfigurationList = F26191BC28FBCD9800A1240E /* Build configuration list for PBXProject "EventReminder" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -330,9 +330,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F26191C028FBCD9800A1240E /* DynamicPractice */,
-				F26191D028FBCD9A00A1240E /* DynamicPracticeTests */,
-				F26191DA28FBCD9A00A1240E /* DynamicPracticeUITests */,
+				F26191C028FBCD9800A1240E /* EventReminder */,
+				F26191D028FBCD9A00A1240E /* EventReminderTests */,
+				F26191DA28FBCD9A00A1240E /* EventReminderUITests */,
 				F2B562FF28FCE2750037A972 /* EventTrackerExtension */,
 			);
 		};
@@ -380,7 +380,7 @@
 				F2B5631228FCE2770037A972 /* EventTracker.intentdefinition in Sources */,
 				F26191C728FBCD9800A1240E /* ContentView.swift in Sources */,
 				F26191EF28FBCF9100A1240E /* FetchEvents.swift in Sources */,
-				F26191C528FBCD9800A1240E /* DynamicPracticeApp.swift in Sources */,
+				F26191C528FBCD9800A1240E /* EventReminderApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F26191D628FBCD9A00A1240E /* DynamicPracticeTests.swift in Sources */,
+				F26191D628FBCD9A00A1240E /* EventReminderPracticeTests.swift in Sources */,
 				F2B5631D28FCE5D90037A972 /* FetchEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,9 +397,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F26191E028FBCD9A00A1240E /* DynamicPracticeUITests.swift in Sources */,
+				F26191E028FBCD9A00A1240E /* EventReminderUITests.swift in Sources */,
 				F2B5631C28FCE5D80037A972 /* FetchEvents.swift in Sources */,
-				F26191E228FBCD9A00A1240E /* DynamicPracticeUITestsLaunchTests.swift in Sources */,
+				F26191E228FBCD9A00A1240E /* EventReminderUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,12 +420,12 @@
 /* Begin PBXTargetDependency section */
 		F26191D328FBCD9A00A1240E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F26191C028FBCD9800A1240E /* DynamicPractice */;
+			target = F26191C028FBCD9800A1240E /* EventReminder */;
 			targetProxy = F26191D228FBCD9A00A1240E /* PBXContainerItemProxy */;
 		};
 		F26191DD28FBCD9A00A1240E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F26191C028FBCD9800A1240E /* DynamicPractice */;
+			target = F26191C028FBCD9800A1240E /* EventReminder */;
 			targetProxy = F26191DC28FBCD9A00A1240E /* PBXContainerItemProxy */;
 		};
 		F2B5631428FCE2770037A972 /* PBXTargetDependency */ = {
@@ -559,11 +559,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DynamicPractice/Preview Content\"";
 				DEVELOPMENT_TEAM = 25FTLXXJD3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = /Users/arthpatel/Desktop/DynamicPractice/Info.plist;
+				INFOPLIST_FILE = /Users/arthpatel/Desktop/EventReminder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -574,7 +573,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPractice;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -592,11 +591,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DynamicPractice/Preview Content\"";
 				DEVELOPMENT_TEAM = 25FTLXXJD3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = /Users/arthpatel/Desktop/DynamicPractice/Info.plist;
+				INFOPLIST_FILE = /Users/arthpatel/Desktop/EventReminder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -607,7 +605,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPractice;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -627,12 +625,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPracticeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminderTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DynamicPractice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DynamicPractice";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EventReminder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EventReminder";
 			};
 			name = Debug;
 		};
@@ -647,12 +645,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPracticeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminderTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DynamicPractice.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DynamicPractice";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EventReminder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EventReminder";
 			};
 			name = Release;
 		};
@@ -665,7 +663,7 @@
 				DEVELOPMENT_TEAM = 25FTLXXJD3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPracticeUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -683,7 +681,7 @@
 				DEVELOPMENT_TEAM = 25FTLXXJD3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPracticeUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminderUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -705,6 +703,7 @@
 				INFOPLIST_FILE = EventTracker/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EventTracker;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -712,7 +711,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPractice.EventTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminder.EventTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -735,6 +734,7 @@
 				INFOPLIST_FILE = EventTracker/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = EventTracker;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -742,7 +742,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Me.DynamicPractice.EventTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = Me.EventReminder.EventTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -755,7 +755,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F26191BC28FBCD9800A1240E /* Build configuration list for PBXProject "DynamicPractice" */ = {
+		F26191BC28FBCD9800A1240E /* Build configuration list for PBXProject "EventReminder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F26191E328FBCD9A00A1240E /* Debug */,
@@ -764,7 +764,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F26191E528FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPractice" */ = {
+		F26191E528FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F26191E628FBCD9A00A1240E /* Debug */,
@@ -773,7 +773,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F26191E828FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPracticeTests" */ = {
+		F26191E828FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F26191E928FBCD9A00A1240E /* Debug */,
@@ -782,7 +782,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F26191EB28FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "DynamicPracticeUITests" */ = {
+		F26191EB28FBCD9A00A1240E /* Build configuration list for PBXNativeTarget "EventReminderUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F26191EC28FBCD9A00A1240E /* Debug */,

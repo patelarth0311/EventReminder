@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F26191C028FBCD9800A1240E"
-               BuildableName = "DynamicPractice.app"
-               BlueprintName = "DynamicPractice"
-               ReferencedContainer = "container:DynamicPractice.xcodeproj">
+               BuildableName = "EventReminder.app"
+               BlueprintName = "EventReminder"
+               ReferencedContainer = "container:EventReminder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F26191C028FBCD9800A1240E"
-            BuildableName = "DynamicPractice.app"
-            BlueprintName = "DynamicPractice"
-            ReferencedContainer = "container:DynamicPractice.xcodeproj">
+            BuildableName = "EventReminder.app"
+            BlueprintName = "EventReminder"
+            ReferencedContainer = "container:EventReminder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F26191C028FBCD9800A1240E"
-            BuildableName = "DynamicPractice.app"
-            BlueprintName = "DynamicPractice"
-            ReferencedContainer = "container:DynamicPractice.xcodeproj">
+            BuildableName = "EventReminder.app"
+            BlueprintName = "EventReminder"
+            ReferencedContainer = "container:EventReminder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
